@@ -29,7 +29,7 @@ public class AppConfig {
     private Environment env;
 
     @Bean
-    public DataSource getDataSource () {
+    public DataSource getDataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName(env.getProperty("db.driver"));
         dataSource.setUrl(env.getProperty("db.url"));
@@ -37,17 +37,18 @@ public class AppConfig {
         dataSource.setPassword(env.getProperty("db.password"));
         return dataSource;
     }
+
     @Bean
-    public PersistenceExceptionTranslationPostProcessor exceptionTranslation(){
+    public PersistenceExceptionTranslationPostProcessor exceptionTranslation() {
         return new PersistenceExceptionTranslationPostProcessor();
     }
 
     @Bean
-    LocalContainerEntityManagerFactoryBean entityManagerFactoryBean () throws IOException {
+    LocalContainerEntityManagerFactoryBean entityManagerFactoryBean() throws IOException {
         LocalContainerEntityManagerFactoryBean entityManager = new LocalContainerEntityManagerFactoryBean();
         entityManager.setDataSource(getDataSource());
         entityManager.setPackagesToScan(env.getRequiredProperty("db.entity.package"));
-        entityManager.setJpaVendorAdapter( new HibernateJpaVendorAdapter());
+        entityManager.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
         entityManager.setJpaProperties(getHibernateProperties());
         return entityManager;
 
@@ -55,7 +56,7 @@ public class AppConfig {
 
     private Properties getHibernateProperties() throws IOException {
         Properties properties = new Properties();
-        InputStream is  = getClass().getClassLoader().getResourceAsStream("hibernate.properties");
+        InputStream is = getClass().getClassLoader().getResourceAsStream("hibernate.properties");
         properties.load(is);
         return properties;
     }
