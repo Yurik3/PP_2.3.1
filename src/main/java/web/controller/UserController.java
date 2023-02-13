@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import web.dao.UserDao;
 import web.service.UserService;
 import web.model.User;
 
@@ -14,8 +15,12 @@ import java.util.Optional;
 @Controller
 @RequestMapping("/")
 public class UserController {
+    private final UserService userService;
+
     @Autowired
-    private UserService userService;
+    public UserController (UserService userService) {
+        this.userService = userService;
+    }
 
     @GetMapping("/user")
     public String getUser(Model model) {
@@ -30,8 +35,7 @@ public class UserController {
     }
 
     @PostMapping("/addUser")
-    public String addUsers(@RequestParam String name, @RequestParam String secondName, @RequestParam int old, Model model) {
-        User user = new User(name, secondName, old);
+    public String addUsers(@ModelAttribute("user") User user) {
         userService.add(user);
         return "redirect:/user";
     }
