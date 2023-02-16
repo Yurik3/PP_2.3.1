@@ -23,8 +23,7 @@ public class UserController {
     }
 
     @GetMapping("/user")
-    public String getUser(Model model) {
-        // Iterable<User> users = userService.getUsers();
+    public String getUsers(Model model) {
         model.addAttribute("users", userService.getUsers());
         return "users";
     }
@@ -35,7 +34,7 @@ public class UserController {
     }
 
     @PostMapping("/addUser")
-    public String addUsers(@ModelAttribute("user") User user) {
+    public String addUser(@ModelAttribute("user") User user) {
         userService.add(user);
         return "redirect:/user";
     }
@@ -56,11 +55,8 @@ public class UserController {
     }
 
     @PostMapping("/{id}/edit")
-    public String editUsers(@PathVariable(value = "id") long id, @RequestParam String name, @RequestParam String secondName, @RequestParam int old, Model model) {
-        User user = userService.findUser(id);
-        user.setName(name);
-        user.setSecondName(secondName);
-        user.setOld(old);
+    public String editUser(@PathVariable(value = "id") long id, @ModelAttribute("user") User user) {
+//        user = userService.findUser(id);
         userService.editUser(user);
         return "redirect:/user";
     }
